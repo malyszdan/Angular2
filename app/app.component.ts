@@ -1,29 +1,25 @@
 import { Component } from '@angular/core';
+import { Car } from './Car';
+import { CarDetailsComponent } from './car-details.component';
 
-export class Car {
-    id: number;
-    model: string;
-}
-
+//noinspection TypeScriptValidateTypes
 @Component({
     selector: 'my-app',
     template: `
     <h1>{{title}}</h1>
     <h2>My Cars</h2>
     <ul class="cars">
-    <li *ngFor = "let car of cars" (click)="onSelect(car)">
-    <span class="card">{{car.id}}</span> {{car.model}}
+      <li *ngFor = "let car of cars" 
+        [class.selected]="car === selectedCar"
+        (click)="onSelect(car)">
+        <span class="card">{{car.id}}</span> 
+        {{car.brand}} {{car.model}}
     <!-- each car goes here -->
-    </li>
+      </li>
     </ul>
-    <h2>{{car.model}}</h2>
-    <div><label>id: </label>{{car.id}}</div>
-    <div>
-    <label>name: </label>
-    <input [(ngModel)]="car.model" placeholder="model">
-    </div>
-
+    <my-car-details [car] = "selectedCar"></my-car-details>
     `,
+
     styles:[`
   .selected {
     background-color: #CFD8DC !important;
@@ -71,27 +67,23 @@ export class Car {
     height: 1.8em;
     margin-right: .8em;
     border-radius: 4px 0 0 4px;
-  }
-`]
+  }`],
+    directives: [CarDetailsComponent]
 })
+
 export class AppComponent {
     public cars = CARS;
     title = 'World of Cars';
-    car: Car = {
-        id: 1,
-        model: 'BMW M3'
-    };
+    selectedCar: Car;
+
+    onSelect(car: Car) {
+        this.selectedCar = car;
+    }
 }
 
 var CARS: Car[] = [
-    { "id": 11, "model": "WV Golf" },
-    { "id": 12, "model": "Audi A3" },
-    { "id": 13, "model": "Mercedes S" },
-    { "id": 14, "model": "Citroen" },
-    { "id": 15, "model": "Skoda" },
-    { "id": 16, "model": "BMW" },
-    { "id": 17, "model": "Audi" },
-    { "id": 18, "model": "Honda" },
-    { "id": 19, "model": "Toyota" },
-    { "id": 20, "model": "Fiat" }
+    { "id": 1, "brand": "WV", "model" : "Golf",  "fuelConsump" : 3.5},
+    { "id": 2, "brand": "BMW", "model" : "M3",  "fuelConsump" : 4.5 },
+    { "id": 3, "brand": "AUDI", "model" : "A8",  "fuelConsump" : 7.5 },
+
 ];
