@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Car } from './Car';
 import { CarDetailsComponent } from './car-details.component';
+import { CarService } from './car.service';
+import { OnInit } from '@angular/core';
 
 //noinspection TypeScriptValidateTypes
 @Component({
@@ -68,22 +70,27 @@ import { CarDetailsComponent } from './car-details.component';
     margin-right: .8em;
     border-radius: 4px 0 0 4px;
   }`],
-    directives: [CarDetailsComponent]
+    directives: [CarDetailsComponent],
+    providers: [CarService]
 })
 
-export class AppComponent {
-    public cars = CARS;
+export class AppComponent implements OnInit {
     title = 'World of Cars';
+    cars : Car[];
     selectedCar: Car;
+
+    constructor(private carService: CarService) { }
+
+
+    getCars(){
+        this.carService.getCars().then(cars => this.cars = cars);
+    }
+    ngOnInit(){
+        this.getCars();
+    }
 
     onSelect(car: Car) {
         this.selectedCar = car;
     }
 }
 
-var CARS: Car[] = [
-    { "id": 1, "brand": "WV", "model" : "Golf",  "fuelConsump" : 3.5},
-    { "id": 2, "brand": "BMW", "model" : "M3",  "fuelConsump" : 4.5 },
-    { "id": 3, "brand": "AUDI", "model" : "A8",  "fuelConsump" : 7.5 },
-
-];
