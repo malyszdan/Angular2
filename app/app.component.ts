@@ -1,96 +1,52 @@
-import { Component } from '@angular/core';
-import { Car } from './Car';
-import { CarDetailsComponent } from './car-details.component';
-import { CarService } from './car.service';
-import { OnInit } from '@angular/core';
 
-//noinspection TypeScriptValidateTypes
+import { Component } from '@angular/core';
+import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router-deprecated';
+import { CarService } from './car.service';
+import { CarDetailsComponent } from './car-details.component';
+import { CarsComponent} from './cars.component';
+import { DashboardComponent } from './dashboard.component';
+
+
+
+
 @Component({
     selector: 'my-app',
-    template: `
-    <h1>{{title}}</h1>
-    <h2>My Cars</h2>
-    <ul class="cars">
-      <li *ngFor = "let car of cars" 
-        [class.selected]="car === selectedCar"
-        (click)="onSelect(car)">
-        <span class="card">{{car.id}}</span> 
-        {{car.brand}} {{car.model}}
-    <!-- each car goes here -->
-      </li>
-    </ul>
-    <my-car-details [car] = "selectedCar"></my-car-details>
+    template:`
+        <h1>{{title}}</h1>
+        <nav>
+            <a [routerLink] = "['Dashboard']">Dashboard</a>
+            <a [routerLink] = "['Cars']">Cars</a>
+        </nav>
+        <router-outlet></router-outlet>
     `,
-
-    styles:[`
-  .selected {
-    background-color: #CFD8DC !important;
-    color: white;
-  }
-  .cars {
-    margin: 0 0 2em 0;
-    list-style-type: none;
-    padding: 0;
-    width: 15em;
-  }
-  .cars li {
-    cursor: pointer;
-    position: relative;
-    left: 0;
-    background-color: #EEE;
-    margin: .5em;
-    padding: .3em 0;
-    height: 1.6em;
-    border-radius: 4px;
-  }
-  .cars li.selected:hover {
-    background-color: #BBD8DC !important;
-    color: white;
-  }
-  .cars li:hover {
-    color: #607D8B;
-    background-color: #DDD;
-    left: .1em;
-  }
-  .cars .text {
-    position: relative;
-    top: -3px;
-  }
-  .cars .card {
-    display: inline-block;
-    font-size: small;
-    color: white;
-    padding: 0.8em 0.7em 0 0.7em;
-    background-color: #607D8B;
-    line-height: 1em;
-    position: relative;
-    left: -1px;
-    top: -4px;
-    height: 1.8em;
-    margin-right: .8em;
-    border-radius: 4px 0 0 4px;
-  }`],
-    directives: [CarDetailsComponent],
-    providers: [CarService]
+        styleUrls: ['app/app.component.css'],
+    directives: [ROUTER_DIRECTIVES],
+    providers: [
+        ROUTER_PROVIDERS,
+        CarService
+    ]
 })
 
-export class AppComponent implements OnInit {
+
+@RouteConfig([{
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: DashboardComponent,
+        useAsDefault: true
+    },
+    {
+        path: '/detail/:id',
+        name: 'CarDetail',
+        component: CarDetailsComponent
+    },
+    {
+        path: '/cars',
+        name: 'Cars',
+        component: CarsComponent
+    }
+])
+
+
+export class AppComponent{
     title = 'World of Cars';
-    cars : Car[];
-    selectedCar: Car;
-
-    constructor(private carService: CarService) { }
-
-
-    getCars(){
-        this.carService.getCars().then(cars => this.cars = cars);
-    }
-    ngOnInit(){
-        this.getCars();
-    }
-
-    onSelect(car: Car) {
-        this.selectedCar = car;
-    }
 }
-
