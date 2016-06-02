@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit(){
         this.carService.getCars()
-            .then(cars => this.cars = cars.slice(1,5));
+            .then(cars => this.cars = cars.slice(0,5));
     }
 
     gotoDetail(car: Car){
