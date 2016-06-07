@@ -1,0 +1,24 @@
+<h2>Cars</h2>
+<ul class="cars">
+    <li *ngFor = "let car of cars" (click)="onSelect(car)"
+        [class.selected]="car === selectedCar">
+        <span class="car-element">
+            {{car.brand}} {{car.model}}
+        </span>
+        <button class="delete-button" (click)="delete(car, $event)">Delete</button>
+        <!-- each car goes here -->
+    </li>
+</ul>
+
+<button (click)="addCar()">Add New Car</button>
+<div *ngIf="addingCar">
+    <my-car-details (close)="close($event)"></my-car-details>
+</div>
+
+
+<div *ngIf="selectedCar">
+    <h2>
+        {{selectedCar.brand }} {{selectedCar.model}} is my car
+    </h2>
+    <button (click)="gotoDetail()">View Details</button>
+</div>

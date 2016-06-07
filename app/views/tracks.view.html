@@ -1,0 +1,14 @@
+<h2>Available Routes</h2>
+<ul class="tracks">
+    <li *ngFor="let track of tracks"
+        [class.selected]="track === selectedTrack"
+        (click)="onSelect(track)">
+        {{track.start}} {{track.meta}}
+    </li>
+</ul>
+<div *ngIf="selectedTrack">
+    <h2>
+        DISTANCE {{selectedTrack.distance}}
+    </h2>
+    <button (click)="gotoDetail()">View Details</button>
+</div>
